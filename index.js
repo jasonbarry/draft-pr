@@ -95,7 +95,7 @@ async function main () {
     console.log(file)
     const arg = file.split('/')[file.split('/').length - 1].replace(/\.js$/, '')
     console.log(arg)
-    const func = require(path.resolve(file))
+    const func = import(path.resolve(file))
     console.log(func)
     return new Promise(resolve => resolve(func(argv[arg])))
   })
