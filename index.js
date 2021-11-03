@@ -70,7 +70,7 @@ async function main () {
   }
 
   // read pull request template from disk
-  let template = '{{netlify.issueDescription}}\n\n{{netlify.deployPreview.app}}'
+  let template = '{{netlify.issueDescription}}\n\n{{netlify.deployPreview}}'
   try {
     const { stdout } = await execa.command(`cat ./.github/pull_request_template.md`)
     template = stdout
@@ -95,8 +95,11 @@ async function main () {
     const func = require(path.resolve(file))
     return new Promise(resolve => resolve(func(argv[arg])))
   })
+  console.log(customPromises)
   const customItems = await Promise.all(customPromises)
+  console.log(customItems)
   const customValues = customItems.reduce((obj, item) => ({...obj, ...item}), {})
+  console.log(customValues)
 
   // find next Deploy Preview number (naive/hacky approach)
   let nextNumber
