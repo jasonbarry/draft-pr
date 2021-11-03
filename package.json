@@ -4,6 +4,9 @@
   "version": "0.1.1",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "draft-pr": "./index.js"
+  },
   "dependencies": {
     "execa": "^5.1.1",
     "glob": "^7.2.0",
