@@ -58,13 +58,12 @@ async function main () {
   }
 
   // pull issue 
-  let title, description, labels
+  let title, description
   try {
-    const { stdout } = await execa.command(`gh issue view ${number} --json title,body,labels`)
+    const { stdout } = await execa.command(`gh issue view ${number} --json title,body`)
     const json = JSON.parse(stdout)
     title = json.title
     description = json.body
-    labels = json.labels
   } catch (error) {
     console.error('Could not pull issue', error)
     process.exit(0)
@@ -126,7 +125,13 @@ async function main () {
   });
 
   // create draft pr
-  console.log(`gh pr create --draft --assignee @me --title="${number}: ${title}" --body="${body}" --label="${labels.join(',')}"`)
+  try {
+    const { stdout } = await execa.command(`gh pr create --draft --assignee @me --title="${number}: ${title}" --body="${body}"`)
+    console.log(stdout)
+  } catch (error) {
+    console.error('Could not create draft PR', error)
+    process.exit(0)
+  }
 }
 
 main()
