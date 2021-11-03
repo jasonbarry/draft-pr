@@ -1,9 +1,8 @@
 {
   "public": true,
   "name": "draft-pr",
-  "version": "0.2.9",
-  "type" : "module",
-  "exports": "./index.js",
+  "version": "0.2.10",
+  "main": "index.js",
   "license": "MIT",
   "bin": {
     "draft-pr": "./index.js"

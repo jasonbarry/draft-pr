@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import execa from 'execa'
-import glob from 'glob'
-import inquirer from 'inquirer'
-import mustache from 'mustache'
-import path from 'path'
-import yargs from 'yargs'
+const execa = require('execa')
+const glob = require('glob')
+const inquirer = require('inquirer')
+const mustache = require('mustache')
+const path = require('path')
+const yargs = require('yargs/yargs')
 const { argv } = yargs(process.argv.slice(2))
 
 async function main () {
@@ -88,22 +88,15 @@ async function main () {
     },
   ])
   const entryPath = answers.entryPath || '/'
-  console.log(entryPath)
 
   // run custom scripts found in /.github/drafts/*.js
-  const customPromises = glob.sync('./.github/draft/*.js').map(async (file) => {
-    console.log(file)
+  const customPromises = glob.sync('./.github/draft/*.js').map((file) => {
     const arg = file.split('/')[file.split('/').length - 1].replace(/\.js$/, '')
-    console.log(arg)
-    const func = await import(path.resolve(file))
-    console.log(func)
+    const func = require(path.resolve(file))
     return new Promise(resolve => resolve(func(argv[arg])))
   })
-  console.log(customPromises)
   const customItems = await Promise.all(customPromises)
-  console.log(customItems)
   const customValues = customItems.reduce((obj, item) => ({...obj, ...item}), {})
-  console.log(customValues)
 
   // find next Deploy Preview number (naive/hacky approach)
   let nextNumber
