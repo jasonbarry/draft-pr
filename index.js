@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const execa = require('execa')
-const glob = require('glob')
-const inquirer = require('inquirer')
-const mustache = require('mustache')
-const path = require('path')
-const yargs = require('yargs/yargs')
+import execa from 'execa'
+import glob from 'glob'
+import inquirer from 'inquirer'
+import mustache from 'mustache'
+import path from 'path'
+import { yargs } from 'yargs'
 const { argv } = yargs(process.argv.slice(2))
 
 async function main () {
