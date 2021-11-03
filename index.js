@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const execa = require('execa')
 const glob = require('glob')
 const inquirer = require('inquirer')
