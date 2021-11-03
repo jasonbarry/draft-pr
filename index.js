@@ -91,11 +91,11 @@ async function main () {
   console.log(entryPath)
 
   // run custom scripts found in /.github/drafts/*.js
-  const customPromises = glob.sync('./.github/draft/*.js').map((file) => {
+  const customPromises = glob.sync('./.github/draft/*.js').map(async (file) => {
     console.log(file)
     const arg = file.split('/')[file.split('/').length - 1].replace(/\.js$/, '')
     console.log(arg)
-    const func = import(path.resolve(file))
+    const func = await import(path.resolve(file))
     console.log(func)
     return new Promise(resolve => resolve(func(argv[arg])))
   })
