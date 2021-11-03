@@ -5,7 +5,7 @@ import glob from 'glob'
 import inquirer from 'inquirer'
 import mustache from 'mustache'
 import path from 'path'
-import { yargs } from 'yargs'
+import yargs from 'yargs/yargs'
 const { argv } = yargs(process.argv.slice(2))
 
 async function main () {
