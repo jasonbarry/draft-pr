@@ -1,9 +1,15 @@
 {
-  "name": "ntl-draft",
-  "version": "1.0.0",
+  "public": true,
+  "name": "draft-pr",
+  "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "execa": "^5.1.1"
+    "execa": "^5.1.1",
+    "glob": "^7.2.0",
+    "inquirer": "^8.2.0",
+    "mustache": "^4.2.0",
+    "ora": "^6.0.1",
+    "yargs": "^17.2.1"
   }
 }
