@@ -25,6 +25,8 @@ async function main () {
     process.exit(0)
   }
 
+  // TODO: check for remote
+
   // TODO: check for uncommitted changes
   // try {
   //   const { stdout } = await execa.command('git status -s')
@@ -127,6 +129,14 @@ async function main () {
       ...customValues,
     }
   });
+
+  // push branch to remote so remote can track local branch
+  try {
+    await execa.command(`git push -u origin ${branch}`)
+  } catch (error) {
+    console.warn('Error when pushing branch to remote', error)
+    process.exit(0)
+  }
 
   // create draft pr
   try {
