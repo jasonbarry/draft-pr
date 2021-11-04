@@ -25,18 +25,18 @@ async function main () {
     process.exit(0)
   }
 
-  // check for uncommitted changes
-  try {
-    const { stdout } = await execa.command('git status -s')
-    const numLines = stdout.split('\n').length
-    if (numLines > 0) {
-      console.error(`You have ${numLines} uncommitted changes. Please commit your changes first.`)
-      process.exit(0)
-    }
-  } catch (error) {
-    console.error('Uncommitted changes check failed', error)
-    process.exit(0)
-  }
+  // TODO: check for uncommitted changes
+  // try {
+  //   const { stdout } = await execa.command('git status -s')
+  //   const numLines = stdout.split('\n').filter(l => !!l).length
+  //   if (numLines > 0) {
+  //     console.error(`You have ${numLines} uncommitted changes. Please commit your changes first.`)
+  //     process.exit(0)
+  //   }
+  // } catch (error) {
+  //   console.error('Uncommitted changes check failed', error)
+  //   process.exit(0)
+  // }
 
   // get branch name
   let branch
