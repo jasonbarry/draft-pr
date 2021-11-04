@@ -94,14 +94,14 @@ async function main () {
   const entryPath = answers.entryPath || '/'
 
   // run custom scripts found in /.github/drafts/*.js
-  const customPromises = glob.sync('./.github/draft/*.js').map((file) => {
+  const customFunctions = glob.sync('./.github/draft/*.js').map((file) => {
     const arg = file.split('/')[file.split('/').length - 1].replace(/\.js$/, '')
     const func = require(path.resolve(file))
-    return new Promise(resolve => resolve(func(argv[arg])))
+    return () => func(argv[arg])
   })
   const customItems = []
-  for (const promise of customPromises) {
-    const result = await promise()
+  for (const func of customFunctions) {
+    const result = await func()
     customItems.push(result)
   }
   const customValues = customItems.reduce((obj, item) => ({...obj, ...item}), {})
