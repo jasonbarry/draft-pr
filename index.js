@@ -27,7 +27,7 @@ async function main () {
 
   // check for uncommitted changes
   try {
-    const { stdout } = await execa.command('git status -b')
+    const { stdout } = await execa.command('git status -s')
     const numLines = stdout.split('\n').length
     if (numLines > 0) {
       console.error(`You have ${numLines} uncommitted changes. Please commit your changes first.`)
