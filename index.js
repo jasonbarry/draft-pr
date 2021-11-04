@@ -25,14 +25,16 @@ async function main () {
     process.exit(0)
   }
 
-  // get remote name 
-  let remote
+  // check for uncommitted changes
   try {
-    const { stdout } = await execa.command('git remote -v')
-    remote = stdout
+    const { stdout } = await execa.command('git status -b')
+    const numLines = stdout.split('\n').length
+    if (numLines > 0) {
+      console.error(`You have ${numLines} uncommitted changes. Please commit your changes first.`)
+      process.exit(0)
+    }
   } catch (error) {
-    console.error('Remote not found. Are you inside a git project?')
-    console.error(error)
+    console.error('Uncommitted changes check failed', error)
     process.exit(0)
   }
 
@@ -42,8 +44,7 @@ async function main () {
     const { stdout } = await execa.command('git rev-parse --abbrev-ref HEAD')
     branch = stdout
   } catch (error) {
-    console.error('Branch not found. Are you inside a git project?')
-    console.error(error)
+    console.error('Branch not found. Are you inside a git project?', error)
     process.exit(0)
   }
 
@@ -126,11 +127,15 @@ async function main () {
 
   // create draft pr
   try {
-    const { stdout } = await execa('gh', 
-      ['pr', 'create', '--draft', '--assignee', '@me', '--title', `${number}: ${title}`, '--body', body]
+    const { stderr, stdout } = await execa('gh', 
+      ['pr', 'create', '--draft', '--head', branch, '--assignee', '@me', '--title', `${number}: ${title}`, '--body', body]
     )
-    
-    console.log(stdout)
+
+    if (stderr) {
+      console.error(stderr)
+    } else {
+      console.log(stdout)
+    }
   } catch (error) {
     console.error('Could not create draft PR', error)
     process.exit(0)
