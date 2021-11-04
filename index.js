@@ -126,7 +126,10 @@ async function main () {
 
   // create draft pr
   try {
-    const { stdout } = await execa.command(`gh pr create --draft --assignee @me --title="${number}: ${title}" --body="${body}"`)
+    const { stdout } = await execa('gh', 
+      ['pr', 'create', '--draft', '--assignee', '@me', '--title', `${number}: ${title}`, '--body', body]
+    )
+    
     console.log(stdout)
   } catch (error) {
     console.error('Could not create draft PR', error)
