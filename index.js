@@ -59,12 +59,13 @@ async function main () {
   }
 
   // pull issue 
-  let title, description
+  let title, description, issueURL
   try {
-    const { stdout } = await execa.command(`gh issue view ${number} --json title,body`)
+    const { stdout } = await execa.command(`gh issue view ${number} --json title,body,url`)
     const json = JSON.parse(stdout)
     title = json.title
     description = json.body
+    issueURL = json.url
   } catch (error) {
     console.error('Could not pull issue', error)
     process.exit(0)
@@ -119,6 +120,8 @@ async function main () {
   const body = mustache.render(template, {
     netlify: {
       issueDescription: `<details><summary>Linked issue description (expand for more context)</summary>${description}</details>`,
+      issueNumber: number,
+      issueURL,
       deployPreview: `https://deploy-preview-${nextNumber}--${argv.site}.netlify.app${entryPath}`,
       setEntryPath: `@netlify ${entryPath}`,
       ...customValues,
@@ -128,7 +131,7 @@ async function main () {
   // create draft pr
   try {
     const { stderr, stdout } = await execa('gh', 
-      ['pr', 'create', '--draft', '--head', branch, '--assignee', '@me', '--title', `${number}: ${title}`, '--body', body]
+      ['pr', 'create', '--draft', '--assignee', '@me', '--title', `${number}: ${title}`, '--body', body]
     )
 
     if (stderr) {
