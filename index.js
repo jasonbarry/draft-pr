@@ -99,7 +99,11 @@ async function main () {
     const func = require(path.resolve(file))
     return new Promise(resolve => resolve(func(argv[arg])))
   })
-  const customItems = await Promise.all(customPromises)
+  const customItems = []
+  for (const promise of customPromises) {
+    const result = await promise()
+    customItems.push(result)
+  }
   const customValues = customItems.reduce((obj, item) => ({...obj, ...item}), {})
 
   // find next Deploy Preview number (naive/hacky approach)
@@ -130,7 +134,7 @@ async function main () {
     }
   });
 
-  // push branch to remote so remote can track local branch
+  // push branch upstream so remote can track local branch
   try {
     await execa.command(`git push -u origin ${branch}`)
   } catch (error) {
